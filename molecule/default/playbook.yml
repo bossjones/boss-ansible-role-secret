@@ -1,8 +1,17 @@
 ---
 - name: Converge
   hosts: all
+  become: yes
+  become_method: sudo
+  environment:
+    SHELL: /bin/bash
   roles:
-    - role: boss-ansible-role-fake
+    - role: boss-ansible-role-core
+    - role: boss-ansible-role-fact
+    - role: boss-ansible-role-environment
+
+    # FIXME: Find a good way to test this guy out
+    - role: boss-ansible-role-secret
       bossjones__user: root
       bossjones__group: root
 

@@ -1,2 +1,13 @@
 ---
-# tasks file for boss-ansible-role-secret
+
+- name: Create secret directories on Ansible Controller
+  file:
+    path: '{{ secret + "/" + item }}'
+    state: 'directory'
+  become: False
+  delegate_to: 'localhost'
+  with_flattened:
+    - '{{ boss__boss__secret___directories }}'
+    - '{{ boss__secret__directories | d([]) }}'
+  when: (boss__boss__secret___directories or boss__secret__directories|d()) and item
+  changed_when: False
